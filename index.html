@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Alex Morgan — Data Analyst, Python Automation Developer, Power BI Specialist." />
+  <title>Shuja | Data Analyst & Python Automation Developer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loader-content">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Loading Portfolio…</div>
+  </div>
+</div>
+
+<button id="scroll-top" aria-label="Scroll to top"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <div class="logo-icon"><i class="fa-solid fa-chart-column"></i></div>
+        <span class="logo-text">DataVision</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#dataviz">Analytics</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme"><i class="fa-solid fa-sun"></i></button>
+        <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-handshake"></i> Hire Me</a>
+        <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<nav id="mobile-nav" class="mobile-nav">
+  <ul>
+    <li><a href="#about"><i class="fa-solid fa-user fa-fw"></i> About</a></li>
+    <li><a href="#skills"><i class="fa-solid fa-code fa-fw"></i> Skills</a></li>
+    <li><a href="#services"><i class="fa-solid fa-cogs fa-fw"></i> Services</a></li>
+    <li><a href="#projects"><i class="fa-solid fa-briefcase fa-fw"></i> Projects</a></li>
+    <li><a href="#dataviz"><i class="fa-solid fa-chart-pie fa-fw"></i> Analytics</a></li>
+    <li><a href="#experience"><i class="fa-solid fa-timeline fa-fw"></i> Experience</a></li>
+    <li><a href="#testimonials"><i class="fa-solid fa-star fa-fw"></i> Reviews</a></li>
+    <li><a href="#contact"><i class="fa-solid fa-envelope fa-fw"></i> Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <canvas id="particles-canvas"></canvas>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge"><span class="pulse-dot"></span><span id="hero-availability"></span></div>
+        <p class="hero-greeting" id="hero-greeting"></p>
+        <h1 class="hero-name" id="hero-name"></h1>
+        <h2 class="hero-headline" id="hero-headline"></h2>
+        <div class="hero-typing-wrapper">
+          <span class="typing-prefix">I am a</span>
+          <span id="typing-text" class="typing-text"></span>
+          <span class="typing-cursor"></span>
+        </div>
+        <p class="hero-desc">Transforming complex datasets into clear, actionable insights. Building automation systems that save hundreds of hours. Crafting dashboards that help businesses make smarter decisions — faster.</p>
+        <div class="hero-cta" id="hero-cta"></div>
+        <div class="hero-stats" id="hero-stats"></div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="profile-frame"><div class="profile-inner" id="profile-inner">AM</div></div>
+          <div class="floating-cards" style="position:relative;height:200px;margin-top:24px">
+            <div class="f-card" style="left:-20px;top:0"><div class="f-card-icon">📊</div><div class="f-card-title">Projects Done</div><div class="f-card-val">120+</div></div>
+            <div class="f-card" style="right:-20px;top:45px"><div class="f-card-icon">⭐</div><div class="f-card-title">Upwork Rating</div><div class="f-card-val">5.0 / 5.0</div></div>
+            <div class="f-card" style="left:60px;top:120px"><div class="f-card-icon">🚀</div><div class="f-card-title">Automation</div><div class="f-card-val">50+ Systems</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Who I Am</span>
+      <h2 class="section-title">About <span>Me</span></h2>
+      <p class="section-subtitle" id="about-title-tag"></p>
+    </div>
+    <div class="about-grid">
+      <div class="about-left slide-left">
+        <div class="about-img-wrap">
+          <div class="about-img-bg"></div>
+          <div class="about-img-placeholder"><span style="font-size:5.5rem">👨‍💻</span></div>
+          <div class="exp-badge"><div class="exp-num">5+</div><div class="exp-lbl">Years Exp.</div></div>
+        </div>
+      </div>
+      <div class="about-right slide-right">
+        <div id="about-bio"></div>
+        <div class="about-highlights" id="about-highlights"></div>
+        <a href="#contact" class="btn btn-primary" style="margin-top:8px"><i class="fa-solid fa-paper-plane"></i> Let's Work Together</a>
+      </div>
+    </div>
+    <div class="stats-row" id="stats-row"></div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">What I Know</span>
+      <h2 class="section-title">Technical <span>Skills</span></h2>
+      <p class="section-subtitle">A comprehensive toolkit built over 5+ years of real-world data projects and automation engineering.</p>
+    </div>
+    <div id="skills-filter" class="skills-filter fade-up"></div>
+    <div id="skills-grid" class="skills-grid"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">What I Do</span>
+      <h2 class="section-title">My <span>Services</span></h2>
+      <p class="section-subtitle">End-to-end data solutions from raw ingestion to executive dashboards — delivered with precision and speed.</p>
+    </div>
+    <div id="services-grid" class="services-grid"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">My Work</span>
+      <h2 class="section-title">Featured <span>Projects</span></h2>
+      <p class="section-subtitle">Real-world data solutions built for actual business challenges across industries.</p>
+    </div>
+    <div class="projects-controls fade-up">
+      <div id="projects-filter" class="projects-filters"></div>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="project-search" placeholder="Search projects…" autocomplete="off" />
+      </div>
+    </div>
+    <div id="projects-grid" class="projects-grid"></div>
+  </div>
+</section>
+
+<!-- DATA VIZ -->
+<section id="dataviz" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Analytics Showcase</span>
+      <h2 class="section-title">Live <span>Data Dashboard</span></h2>
+      <p class="section-subtitle">Interactive business analytics and KPI charts — a sample of the dashboards I build for clients.</p>
+    </div>
+    <div id="kpi-cards" class="kpi-row"></div>
+    <div class="charts-grid fade-up" style="margin-bottom:26px">
+      <div class="chart-card">
+        <div class="chart-card-title">📈 Monthly Sales Growth <span style="font-size:.78rem;color:var(--text-muted);font-weight:400">2023 vs 2024</span></div>
+        <div class="chart-wrap tall"><canvas id="chart-sales"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">📊 Quarterly Profit Analysis <span style="font-size:.78rem;color:var(--text-muted);font-weight:400">Revenue vs Profit</span></div>
+        <div class="chart-wrap tall"><canvas id="chart-profit"></canvas></div>
+      </div>
+    </div>
+    <div class="charts-grid-3 fade-up">
+      <div class="chart-card"><div class="chart-card-title">🎯 Customer Segments</div><div class="chart-wrap"><canvas id="chart-customers"></canvas></div></div>
+      <div class="chart-card"><div class="chart-card-title">💰 Revenue by Service</div><div class="chart-wrap"><canvas id="chart-revenue"></canvas></div></div>
+      <div class="chart-card"><div class="chart-card-title">🔥 Skills Overview</div><div style="padding:12px 0" id="skills-overview-bars"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">My Journey</span>
+      <h2 class="section-title">Work <span>Experience</span></h2>
+      <p class="section-subtitle">5+ years of hands-on experience turning data chaos into business clarity.</p>
+    </div>
+    <div id="timeline" class="timeline"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Client Love</span>
+      <h2 class="section-title">What Clients <span>Say</span></h2>
+      <p class="section-subtitle">Trusted by 60+ businesses worldwide. Here's what they have to say about working with me.</p>
+    </div>
+    <div class="testimonials-wrapper fade-up">
+      <div id="testimonials-track" class="testimonials-track"></div>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="slider-prev"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="slider-dots" id="slider-dots"></div>
+      <button class="slider-btn" id="slider-next"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-tag">Get In Touch</span>
+      <h2 class="section-title">Let's <span>Work Together</span></h2>
+      <p class="section-subtitle">Ready to transform your data? Let's talk about your project.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="slide-left">
+        <div class="contact-info">
+          <h3>Ready to Start Your Data Project?</h3>
+          <p>Whether you need a Power BI dashboard, Python automation, data cleaning, or a full BI solution — I'm here to deliver results. Typically respond within 4 hours.</p>
+        </div>
+        <div id="contact-items" class="contact-items"></div>
+        <div id="social-links" class="social-links"></div>
+      </div>
+      <div class="contact-form-wrap slide-right">
+        <h3><i class="fa-solid fa-paper-plane" style="color:var(--purple-light);margin-right:10px"></i>Send Me a Message</h3>
+        <form id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Your Name</label>
+              <input class="form-input" id="contact-name" type="text" placeholder="John Smith" required />
+              <div class="form-error">Please enter your name</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input class="form-input" id="contact-email-input" type="email" placeholder="john@company.com" required />
+              <div class="form-error">Please enter a valid email</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-input" id="contact-subject" style="cursor:pointer">
+              <option>Power BI Dashboard Development</option>
+              <option>Python Automation Project</option>
+              <option>Excel Automation / VBA</option>
+              <option>Data Analysis & Reporting</option>
+              <option>Business Intelligence Solution</option>
+              <option>Other Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Message</label>
+            <textarea class="form-textarea" id="contact-message" placeholder="Tell me about your project, timeline, and goals…" required></textarea>
+            <div class="form-error">Please enter your message</div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:16px">
+            <i class="fa-solid fa-paper-plane"></i> Send Message
+          </button>
+          <div id="form-success" class="form-success">
+            <i class="fa-solid fa-check-circle" style="margin-right:8px"></i>
+            Message sent! I'll get back to you within 4 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">DataVision</div>
+        <p class="footer-tagline" id="footer-tagline"></p>
+        <div style="margin-top:18px;display:flex;gap:11px">
+          <a href="#" class="social-link" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" class="social-link" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="#" class="social-link" title="Upwork"><i class="fa-solid fa-briefcase"></i></a>
+          <a href="#" class="social-link" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li>
+          <li><a href="#services">Services</a></li><li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Power BI Dashboards</a></li><li><a href="#services">Python Automation</a></li>
+          <li><a href="#services">Excel Solutions</a></li><li><a href="#services">Data Analysis</a></li>
+          <li><a href="#services">BI Consulting</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="mailto:alex.morgan@dataanalyst.com" id="contact-email">Email Me</a></li>
+          <li><a href="#">LinkedIn</a></li><li><a href="#">GitHub</a></li>
+          <li><a href="#">Upwork Profile</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-copyright"></span>
+      <span>Built with <span style="color:var(--pink)">♥</span> for Data &amp; Automation</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Data files -->
+<script src="js/contents.js"></script>
+<script src="js/projects_contents.js"></script>
+<script src="js/skills.js"></script>
+<script src="js/services.js"></script>
+<script src="js/experiences.js"></script>
+<script src="js/testimonials.js"></script>
+<script src="js/charts_data.js"></script>
+<script src="js/main.js"></script>
+<script>
+// Skills overview mini-bars — uses admin localStorage data if available
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const el = document.getElementById("skills-overview-bars");
+    if (!el) return;
+    let src = (typeof SKILLS_DATA !== "undefined") ? SKILLS_DATA.skills : [];
+    try {
+      const saved = localStorage.getItem("portfolioAdminData");
+      if (saved) { const p = JSON.parse(saved); if (p.skills && p.skills.length) src = p.skills; }
+    } catch(e) {}
+    el.innerHTML = src.slice(0,7).map(s => `
+      <div style="margin-bottom:13px">
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:6px;color:var(--text-secondary)">
+          <span>${s.name}</span><span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.78rem">${s.level}%</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden">
+          <div style="height:100%;border-radius:100px;background:linear-gradient(135deg,#7C3AED,#06B6D4);width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)" data-level="${s.level}"></div>
+        </div>
+      </div>`).join("");
+    const obs = new IntersectionObserver(en => {
+      if (en[0].isIntersecting) { el.querySelectorAll("[data-level]").forEach(b => b.style.width = b.dataset.level + "%"); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+  }, 300);
+});
+// Secret keyboard shortcut Ctrl+Shift+A → admin login
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.shiftKey && e.key === "A") window.location.href = "login.html";
+});
+</script>
+</body>
+</html>

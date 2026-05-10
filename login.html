@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — DataAlex Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --pu:#7C3AED;--pu-l:#A78BFA;--cy:#06B6D4;--gn:#10B981;--rd:#EF4444;
+      --bg0:#030712;--bg1:#0D1117;--bg2:#161B2C;
+      --bdl:rgba(167,139,250,.16);--t1:#F1F5F9;--t2:#94A3B8;--t3:#475569;
+      --gp:linear-gradient(135deg,#7C3AED,#06B6D4);
+    }
+    html,body{height:100%;font-family:'DM Sans',system-ui,sans-serif;background:var(--bg0);color:var(--t1);font-size:16px}
+
+    /* ── animated orbs ── */
+    .orbs{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+    .orb{position:absolute;border-radius:50%;animation:orbFloat 12s ease-in-out infinite}
+    .o1{width:640px;height:640px;top:-220px;left:-180px;background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%)}
+    .o2{width:520px;height:520px;bottom:-160px;right:-160px;background:radial-gradient(circle,rgba(6,182,212,.13),transparent 70%);animation-delay:-6s;animation-direction:reverse}
+    .o3{width:320px;height:320px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(124,58,237,.07),transparent 70%);animation-delay:-3s}
+    @keyframes orbFloat{0%,100%{transform:scale(1) translate(0,0)}33%{transform:scale(1.08) translate(18px,-14px)}66%{transform:scale(.95) translate(-10px,18px)}}
+
+    /* grid pattern */
+    .grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);
+      background-size:64px 64px}
+
+    /* ── page ── */
+    .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+
+    /* ── card ── */
+    .card{width:100%;max-width:468px;background:rgba(13,17,23,.88);border:1px solid var(--bdl);border-radius:26px;padding:50px 44px;backdrop-filter:blur(24px);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(124,58,237,.1);animation:cardIn .5s cubic-bezier(.4,0,.2,1) forwards}
+    @keyframes cardIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+
+    /* logo */
+    .logo-row{display:flex;align-items:center;gap:13px;justify-content:center;margin-bottom:10px}
+    .logo-ico{width:50px;height:50px;background:var(--gp);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;color:#fff;box-shadow:0 6px 22px rgba(124,58,237,.52)}
+    .logo-nm{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;background:var(--gp);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+    /* badge */
+    .badge-row{text-align:center;margin-bottom:28px}
+    .admin-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 16px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.28);border-radius:100px;font-size:.75rem;font-weight:600;color:var(--pu-l);font-family:'Courier New',monospace;letter-spacing:.07em}
+
+    /* heading */
+    .hdr{text-align:center;margin-bottom:32px}
+    .hdr h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:8px;line-height:1.15}
+    .hdr p{font-size:.93rem;color:var(--t2);line-height:1.65}
+
+    .divider{height:1px;background:var(--bdl);margin-bottom:28px}
+
+    /* alert */
+    .alert{display:none;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;font-size:.875rem;font-weight:500;margin-bottom:20px}
+    .alert.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#FCA5A5}
+    .alert.ok{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#6EE7B7}
+    .alert.show{display:flex}
+
+    /* form */
+    .form-grp{margin-bottom:22px}
+    .form-lbl{display:flex;align-items:center;gap:7px;font-size:.83rem;font-weight:600;color:var(--t2);margin-bottom:9px}
+    .form-lbl i{color:var(--pu-l);font-size:.78rem}
+    .inp-wrap{position:relative}
+    .form-inp{width:100%;padding:14px 50px 14px 48px;background:rgba(22,27,44,.72);border:1.5px solid var(--bdl);border-radius:13px;color:var(--t1);font-family:'DM Sans',sans-serif;font-size:.96rem;outline:none;transition:all .25s ease}
+    .form-inp:focus{border-color:var(--pu);background:rgba(22,27,44,.96);box-shadow:0 0 0 3px rgba(124,58,237,.14)}
+    .form-inp.err-inp{border-color:var(--rd);box-shadow:0 0 0 3px rgba(239,68,68,.12)}
+    .ico-left{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:.92rem;pointer-events:none;transition:color .2s}
+    .inp-wrap:focus-within .ico-left{color:var(--pu-l)}
+    .toggle-pw{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--t3);cursor:pointer;font-size:.92rem;background:none;border:none;padding:4px;transition:color .2s}
+    .toggle-pw:hover{color:var(--pu-l)}
+    .err-msg{display:none;font-size:.78rem;color:var(--rd);margin-top:6px;align-items:center;gap:5px}
+    .err-msg.show{display:flex}
+
+    /* submit */
+    .btn-login{width:100%;padding:16px;background:var(--gp);border:none;border-radius:13px;color:#fff;font-family:'Syne',sans-serif;font-size:1.02rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:all .25s ease;box-shadow:0 6px 22px rgba(124,58,237,.42);display:flex;align-items:center;justify-content:center;gap:9px}
+    .btn-login:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(124,58,237,.58)}
+    .btn-login:disabled{opacity:.7;cursor:not-allowed;transform:none}
+    .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .75s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* security note */
+    .sec-note{margin-top:26px;padding:14px 16px;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.15);border-radius:11px;display:flex;align-items:flex-start;gap:10px}
+    .sec-note i{color:var(--cy);margin-top:2px;flex-shrink:0;font-size:.85rem}
+    .sec-note p{font-size:.78rem;color:var(--t3);line-height:1.6}
+
+    /* back */
+    .back{text-align:center;margin-top:24px}
+    .back a{font-size:.875rem;color:var(--t3);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .2s}
+    .back a:hover{color:var(--pu-l)}
+
+    .footer-note{margin-top:28px;text-align:center;font-size:.78rem;color:var(--t3)}
+
+    /* shake */
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .shake{animation:shake .4s ease}
+
+    /* shortcut hint */
+    .hint{text-align:center;margin-top:16px;font-size:.72rem;color:rgba(71,85,105,.6);font-family:'Courier New',monospace}
+  </style>
+</head>
+<body>
+<div class="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="grid"></div>
+
+<div class="page">
+  <div class="card" id="login-card">
+
+    <!-- Logo -->
+    <div class="logo-row">
+      <div class="logo-ico"><i class="fa-solid fa-chart-column"></i></div>
+      <div class="logo-nm">DataAlex</div>
+    </div>
+    <div class="badge-row">
+      <div class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Secure Admin Access</div>
+    </div>
+
+    <!-- Header -->
+    <div class="hdr">
+      <h2>Welcome Back 👋</h2>
+      <p>Sign in to manage your portfolio content, projects, and analytics dashboard.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Alert -->
+    <div class="alert" id="login-alert">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span id="alert-text">Invalid credentials. Please try again.</span>
+    </div>
+
+    <!-- Form -->
+    <form id="login-form" novalidate>
+      <div class="form-grp">
+        <label class="form-lbl"><i class="fa-solid fa-envelope"></i> Email Address</label>
+        <div class="inp-wrap">
+          <input type="email" id="inp-email" class="form-inp" placeholder="your@email.com" autocomplete="email" />
+          <i class="fa-solid fa-envelope ico-left"></i>
+        </div>
+        <div class="err-msg" id="email-err"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid email</div>
+      </div>
+
+      <div class="form-grp">
+        <label class="form-lbl"><i class="fa-solid fa-lock"></i> Password</label>
+        <div class="inp-wrap">
+          <input type="password" id="inp-pw" class="form-inp" placeholder="••••••••••" autocomplete="current-password" />
+          <i class="fa-solid fa-lock ico-left"></i>
+          <button type="button" class="toggle-pw" id="toggle-pw" title="Show password">
+            <i class="fa-solid fa-eye" id="pw-eye"></i>
+          </button>
+        </div>
+        <div class="err-msg" id="pw-err"><i class="fa-solid fa-circle-exclamation"></i> Password cannot be empty</div>
+      </div>
+
+      <button type="submit" class="btn-login" id="login-btn">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span id="btn-label">Sign In to Dashboard</span>
+      </button>
+    </form>
+
+    <!-- Security note -->
+    <div class="sec-note">
+      <i class="fa-solid fa-info-circle"></i>
+      <p>Admin panel is for authorized users only. All content changes save to your browser's localStorage and instantly update the portfolio page when visitors reload it.</p>
+    </div>
+
+    <!-- Back link -->
+    <div class="back"><a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a></div>
+    <div class="hint">Tip: Press Ctrl+Shift+A on the portfolio page to reach this login</div>
+  </div>
+
+  <div class="footer-note">&copy; 2025 DataAlex Portfolio &nbsp;·&nbsp; Admin Panel</div>
+</div>
+
+<script>
+  // Encoded credentials (base64 — keeps them out of plain sight in source)
+  const _u = atob("c2h1amF3YWxpNTVAZ21haWwuY29t");  // shujawali55@gmail.com
+  const _p = atob("WmF5YW5AMTUyMDE=");                // Zayan@15201
+
+  // If already authenticated, go straight to dashboard
+  if (sessionStorage.getItem("portfolio_admin_auth") === "true") {
+    window.location.replace("admin.html");
+  }
+
+  // Toggle password visibility
+  document.getElementById("toggle-pw").addEventListener("click", () => {
+    const inp = document.getElementById("inp-pw");
+    const eye = document.getElementById("pw-eye");
+    const isText = inp.type === "text";
+    inp.type = isText ? "password" : "text";
+    eye.className = isText ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+  });
+
+  // Focus email → Enter → focus password
+  document.getElementById("inp-email").addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); document.getElementById("inp-pw").focus(); }
+  });
+
+  // Clear errors on input
+  ["inp-email","inp-pw"].forEach(id => {
+    document.getElementById(id).addEventListener("input", () => {
+      document.getElementById(id).classList.remove("err-inp");
+      document.getElementById("login-alert").classList.remove("show");
+    });
+  });
+
+  // Submit
+  document.getElementById("login-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const email  = document.getElementById("inp-email").value.trim();
+    const pw     = document.getElementById("inp-pw").value;
+    const alert  = document.getElementById("login-alert");
+    const emailE = document.getElementById("email-err");
+    const pwE    = document.getElementById("pw-err");
+    const card   = document.getElementById("login-card");
+    const btn    = document.getElementById("login-btn");
+    const label  = document.getElementById("btn-label");
+
+    // Reset UI
+    alert.classList.remove("show","err","ok");
+    emailE.classList.remove("show"); pwE.classList.remove("show");
+    document.getElementById("inp-email").classList.remove("err-inp");
+    document.getElementById("inp-pw").classList.remove("err-inp");
+
+    // Validate
+    let valid = true;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailE.classList.add("show"); document.getElementById("inp-email").classList.add("err-inp"); valid = false;
+    }
+    if (!pw) {
+      pwE.classList.add("show"); document.getElementById("inp-pw").classList.add("err-inp"); valid = false;
+    }
+    if (!valid) return;
+
+    // Loading
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div><span>Verifying…</span>';
+
+    await new Promise(r => setTimeout(r, 950));
+
+    if (email === _u && pw === _p) {
+      // ✅ Success
+      btn.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>Access Granted! Redirecting…</span>';
+      btn.style.background = "linear-gradient(135deg,#059669,#10B981)";
+      alert.innerHTML = '<i class="fa-solid fa-check-circle"></i><span id="alert-text">Login successful! Taking you to the dashboard…</span>';
+      alert.classList.add("show","ok");
+      sessionStorage.setItem("portfolio_admin_auth", "true");
+      sessionStorage.setItem("portfolio_admin_user", email);
+      setTimeout(() => window.location.replace("admin.html"), 900);
+    } else {
+      // ❌ Failed
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i><span id="btn-label">Sign In to Dashboard</span>';
+      document.getElementById("alert-text").textContent = "Invalid email or password. Please check your credentials and try again.";
+      alert.classList.add("show","err");
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 450);
+      document.getElementById("inp-email").classList.add("err-inp");
+      document.getElementById("inp-pw").classList.add("err-inp");
+      document.getElementById("inp-pw").value = "";
+      document.getElementById("inp-pw").focus();
+    }
+  });
+</script>
+</body>
+</html>

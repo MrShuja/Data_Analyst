@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — DataAlex Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/admin.css" />
+  <script>
+    // Auth guard — must run BEFORE page renders
+    (function() {
+      if (sessionStorage.getItem("portfolio_admin_auth") !== "true") {
+        window.location.replace("login.html");
+      }
+    })();
+  </script>
+</head>
+<body>
+
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Modal -->
+<div id="modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Modal</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<div class="admin-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <div class="brand-icon"><i class="fa-solid fa-chart-column"></i></div>
+      <div><div class="brand-name"><span>DataAlex</span></div><div class="brand-sub">Admin Panel v2.0</div></div>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <button class="nav-item active" data-section="dashboard"><i class="fa-solid fa-gauge"></i><span>Dashboard</span></button>
+      <div class="nav-section-label" style="margin-top:8px">Content</div>
+      <button class="nav-item" data-section="projects"><i class="fa-solid fa-briefcase"></i><span>Projects</span><span class="badge" id="badge-projects">–</span></button>
+      <button class="nav-item" data-section="skills"><i class="fa-solid fa-code"></i><span>Skills</span><span class="badge" id="badge-skills">–</span></button>
+      <button class="nav-item" data-section="services"><i class="fa-solid fa-cogs"></i><span>Services</span><span class="badge" id="badge-services">–</span></button>
+      <button class="nav-item" data-section="experiences"><i class="fa-solid fa-timeline"></i><span>Experiences</span><span class="badge" id="badge-experiences">–</span></button>
+      <button class="nav-item" data-section="testimonials"><i class="fa-solid fa-star"></i><span>Testimonials</span><span class="badge" id="badge-testimonials">–</span></button>
+      <div class="nav-section-label" style="margin-top:8px">Config</div>
+      <button class="nav-item" data-section="hero"><i class="fa-solid fa-house"></i><span>Hero Content</span></button>
+      <button class="nav-item" data-section="settings"><i class="fa-solid fa-sliders"></i><span>Settings</span></button>
+      <div class="nav-section-label" style="margin-top:8px">Links</div>
+      <a class="nav-item" href="index.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>View Portfolio</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-profile">
+        <div class="admin-avatar">SJ</div>
+        <div><div class="admin-name">Shuja Wali</div><div class="admin-role">Portfolio Admin</div></div>
+        <button onclick="logout()" title="Logout" style="margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.9rem;padding:4px"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-btn mobile-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="page-title">Dashboard Overview</div>
+      <div class="topbar-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search…" /></div>
+      <div class="topbar-actions">
+        <a href="index.html" target="_blank" class="topbar-btn" title="View Portfolio"><i class="fa-solid fa-eye"></i></a>
+        <button class="topbar-btn" title="Refresh" onclick="location.reload()"><i class="fa-solid fa-rotate"></i></button>
+        <button class="topbar-btn" title="Logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div id="section-dashboard" class="admin-section">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Dashboard</span></div>
+          <h2>Dashboard Overview</h2><p>Real-time overview of your portfolio content.</p>
+        </div>
+        <div id="dash-stats" class="stats-grid"></div>
+        <div class="charts-row" style="margin-bottom:24px">
+          <div class="card"><div class="card-header"><div class="card-title">📊 Projects by Category</div></div><div class="chart-container" style="height:200px"><canvas id="admin-chart-categories"></canvas></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">🔥 Top Skills by Level</div></div><div class="chart-container" style="height:200px"><canvas id="admin-chart-skills"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Recent Projects</div><button class="btn btn-primary btn-sm" onclick="showSection('projects')"><i class="fa-solid fa-arrow-right"></i> Manage All</button></div>
+          <div class="table-wrap" id="recent-projects"></div>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div id="section-projects" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Projects</span></div>
+          <h2>Manage Projects</h2><p>Add, edit, or remove portfolio projects. Changes save instantly and reflect on your portfolio.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">All Projects</div><button class="btn btn-primary btn-sm" onclick="openAddProjectModal()"><i class="fa-solid fa-plus"></i> Add Project</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Title</th><th>Category</th><th>Technologies</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="projects-table-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div id="section-skills" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Skills</span></div>
+          <h2>Manage Skills</h2><p>Update skills shown in your portfolio.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">All Skills</div><button class="btn btn-primary btn-sm" onclick="openSkillModal(null)"><i class="fa-solid fa-plus"></i> Add Skill</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Name</th><th>Category</th><th>Level</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody id="skills-table-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div id="section-services" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Services</span></div>
+          <h2>Manage Services</h2><p>Update the services you offer to clients.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">All Services</div><button class="btn btn-primary btn-sm" onclick="openServiceModal(null)"><i class="fa-solid fa-plus"></i> Add Service</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Service</th><th>Description</th><th>Tags</th><th>Actions</th></tr></thead>
+            <tbody id="services-table-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIENCES -->
+      <div id="section-experiences" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Experience</span></div>
+          <h2>Manage Experiences</h2><p>Update your professional experience timeline.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Work History</div><button class="btn btn-primary btn-sm" onclick="openExperienceModal(null)"><i class="fa-solid fa-plus"></i> Add Experience</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Role</th><th>Company</th><th>Type</th><th>Duration</th><th>Actions</th></tr></thead>
+            <tbody id="experiences-table-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div id="section-testimonials" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Testimonials</span></div>
+          <h2>Manage Testimonials</h2><p>Add or edit client reviews.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Client Reviews</div><button class="btn btn-primary btn-sm" onclick="openTestimonialModal(null)"><i class="fa-solid fa-plus"></i> Add Testimonial</button></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Client</th><th>Review</th><th>Rating</th><th>Platform</th><th>Actions</th></tr></thead>
+            <tbody id="testimonials-table-body"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO EDITOR -->
+      <div id="section-hero" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Hero Content</span></div>
+          <h2>Manage Hero Content</h2><p>Update the hero section text.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Hero Editor</div><a href="index.html#hero" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-eye"></i> Preview</a></div>
+          <div id="hero-editor-form"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="section-settings" class="admin-section" style="display:none">
+        <div class="page-header">
+          <div class="breadcrumb">Admin <i class="fa-solid fa-chevron-right fa-xs"></i> <span>Settings</span></div>
+          <h2>Website Settings</h2><p>Manage data, exports, and resets.</p>
+        </div>
+        <div id="settings-content"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/contents.js"></script>
+<script src="js/projects_contents.js"></script>
+<script src="js/skills.js"></script>
+<script src="js/services.js"></script>
+<script src="js/experiences.js"></script>
+<script src="js/testimonials.js"></script>
+<script src="js/charts_data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
